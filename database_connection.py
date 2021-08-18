@@ -1,11 +1,11 @@
-import bcrypt
+# import bcrypt
 import mongoengine as mongoDB
-from flask import Flask, jsonify, request, make_response
-from flask_bcrypt import Bcrypt
+from flask import Flask, request, make_response
+# from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
-from flask_socketio import SocketIO, send, emit
-import random
+# from flask_socketio import SocketIO, send, emit
+# import random
 
 app = Flask(__name__)
 DB_URI = 'mongodb+srv://Admin:admin%40123@cluster0.1lkj9.mongodb.net/csproject?retryWrites=true&w=majority'
