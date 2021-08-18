@@ -10,6 +10,7 @@ flask-cors = "*"
 pymongo = "*"
 flask-socketio = "*"
 bcrypt = "*"
+gunicorn = "*"
 
 [dev-packages]
 
