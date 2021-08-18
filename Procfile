@@ -1,2 +1,1 @@
-worker: python worker.py
-web: bundle exec rails server -p $PORT
+web: gunicorn --bind 0.0.0.0:$PORT flaskapp:app
