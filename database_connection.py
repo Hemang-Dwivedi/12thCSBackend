@@ -17,15 +17,17 @@ users = MongoClient(DB_URI)
 class users(mongoDB.Document):
     userid = mongoDB.StringField(required=True)
     password = mongoDB.StringField(required=True)
+    present = mongoDB.DateField(required=False)
 
-    def __init__(self, userid, password, *args, **kwargs):
+    def __init__(self, userid, password, present, *args, **kwargs):
         super(mongoDB.Document, self).__init__(*args, **kwargs)
         super().__init__(*args, **kwargs)
         self.password = password
         self.userid = userid
+        self.present = present
 
     def __str__(self):
-        return f'userid: {self.userid}, password: {self.password} '
+        return f'userid: {self.userid}, password: {self.password}, present: {self.present} '
 
 
 @app.route('/login/<userid>/<password>', methods=['GET'])
@@ -38,6 +40,12 @@ def login(userid, password):
     if user['password'] != password:
         return make_response('Incorrect Password', 403)
     return make_response('Success', 200)
+
+
+@app.route('/attendance/<userid>', methods=['POST'])
+def attendance(userid):
+    user = users.objects(userid=userid).first()
+    presentdates = users.objects.present
 
 
 # if condition to check name is equal to main to generate a script

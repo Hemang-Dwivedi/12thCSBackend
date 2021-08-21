@@ -56,7 +56,7 @@ def clear_pass_insert(var):
 
 
 def login():
-    resp = requests.get('https://cs-project-database-connection.herokuapp.com//login/' + user.get() + '/' + password.get()).text
+    resp = requests.get('https://cs-project-database-connection.herokuapp.com/login/' + user.get() + '/' + password.get()).text
     if resp == "Success":
         frame2.pack_forget()
         frame3.pack()
