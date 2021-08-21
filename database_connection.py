@@ -46,7 +46,7 @@ def login(userid, password):
 def attendance(userid):
     user = users.objects(userid=userid).first()
     presentdates = users.objects.present
-
+    return make_response(presentdates, 200)
 
 # if condition to check name is equal to main to generate a script
 if __name__ == '__main__':
