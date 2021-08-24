@@ -4,35 +4,19 @@ from flask import Flask, make_response
 # from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
-# from flask_socketio import SocketIO, send, emit
 
 app = Flask(__name__)
-DB_URI = 'mongodb+srv://Admin:admin%40123@cluster0.1lkj9.mongodb.net/csproject?retryWrites=true&w=majority'
-mongoDB.connect("csproject", host=DB_URI)
+DB_URL = 'mongodb+srv://Admin:admin%40123@cluster0.1lkj9.mongodb.net/csproject?retryWrites=true&w=majority'
 app = Flask(__name__)
 CORS(app)
-users = MongoClient(DB_URI)
-
-
-class users(mongoDB.Document):
-    userid = mongoDB.StringField(required=True)
-    password = mongoDB.StringField(required=True)
-    present = mongoDB.ListField(required=True)
-
-    def __init__(self, userid, password, present, *args, **kwargs):
-        super(mongoDB.Document, self).__init__(*args, **kwargs)
-        super().__init__(*args, **kwargs)
-        self.password = password
-        self.userid = userid
-        self.present = present
-
-    def __str__(self):
-        return f'userid: {self.userid}, password: {self.password}, present: {self.present} '
+client = MongoClient(DB_URL)
+db = client.csproject
+col = db.users
 
 
 @app.route('/login/<userid>/<password>', methods=['GET'])
 def login(userid, password):
-    user = users.objects(userid=userid).first()
+    user = col.find_one({'userid': userid})
     if not userid or not password:
         return make_response('Email or password Not Found', 401)
     if not user:
@@ -44,8 +28,8 @@ def login(userid, password):
 
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
-    user = users.objects(userid=userid).first()
-    present = users.objects.present
+    user = users.objects
+    present = users.objects
     return make_response(user + " " + present, 200)
 
 
