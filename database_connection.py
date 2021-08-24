@@ -28,9 +28,9 @@ def login(userid, password):
 
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
-    user = users.objects
-    present = users.objects
-    return make_response(user + " " + present, 200)
+    user = col.find_one({'userid': userid})
+    # present = col.find_one()
+    return make_response(user, 200)
 
 
 # if condition to check name is equal to main to generate a script
