@@ -30,7 +30,7 @@ def login(userid, password):
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
     user = col.find_one({'userid': userid})
-    user = json.loads(user)
+    user = json.load(user)
     # present = col.find_one()
     return make_response(user, 200)
 
