@@ -1,6 +1,6 @@
 # import bcrypt
 import mongoengine as mongoDB
-from flask import Flask, request, make_response
+from flask import Flask, make_response
 # from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -17,7 +17,7 @@ users = MongoClient(DB_URI)
 class users(mongoDB.Document):
     userid = mongoDB.StringField(required=True)
     password = mongoDB.StringField(required=True)
-    present = mongoDB.DateField(required=False)
+    present = mongoDB.ListField(required=True)
 
     def __init__(self, userid, password, present, *args, **kwargs):
         super(mongoDB.Document, self).__init__(*args, **kwargs)
@@ -45,8 +45,9 @@ def login(userid, password):
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
     user = users.objects(userid=userid).first()
-    presentdates = users.objects.present
-    return make_response(presentdates, 200)
+    present = users.objects.present
+    return make_response(user + " " + present, 200)
+
 
 # if condition to check name is equal to main to generate a script
 if __name__ == '__main__':
