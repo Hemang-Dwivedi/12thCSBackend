@@ -69,6 +69,9 @@ def login():
     elif resp == "Incorrect Password":
         respon = Label(frame2, text="Incorrect Password", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
+    else:
+        respon = Label(frame2, text="Backend Error", bg="White", width=30, fg="Red")
+        respon.grid(row=1, column=1, columnspan=2)
 
 
 user = Entry(frame2, width=40, font=("Times New Roman", 10, 'bold'))
