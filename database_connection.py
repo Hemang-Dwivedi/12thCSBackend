@@ -4,6 +4,7 @@ from flask import Flask, make_response
 # from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
+import json
 
 app = Flask(__name__)
 DB_URL = 'mongodb+srv://Admin:admin%40123@cluster0.1lkj9.mongodb.net/csproject?retryWrites=true&w=majority'
@@ -29,6 +30,7 @@ def login(userid, password):
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
     user = col.find_one({'userid': userid})
+    user = json.loads(user)
     # present = col.find_one()
     return make_response(user, 200)
 
