@@ -1,9 +1,10 @@
 # import bcrypt
-import mongoengine as mongoDB
+# import mongoengine as mongoDB
 from flask import Flask, make_response
 # from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
+from bson import json_util
 import json
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ def login(userid, password):
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
     user = col.find_one({'userid': userid})
-    user = json.dumps(user)
+    user = json.dumps(json_util.dumps(user))
     # present = col.find_one()
     return make_response(user, 200)
 
