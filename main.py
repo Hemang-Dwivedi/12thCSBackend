@@ -56,17 +56,17 @@ def clear_pass_insert(var):
 
 
 def studentlog():
-    login = "student"
-    login = str(login)
+    global logine
+    logine = "student"
 
 
 def teacherlog():
-    login = "teacher"
-    login = str(login)
+    global logine
+    logine = "teacher"
 
 
 def login():
-    resp = requests.get('https://cs-project-database-connection.herokuapp.com/login/' + login + user.get() + '/' + password.get()).text
+    resp = requests.get('https://cs-project-database-connection.herokuapp.com/login/' + logine + '/' + user.get() + '/' + password.get()).text
     if resp == "Success":
         frame2.pack_forget()
         frame3.pack()
