@@ -55,8 +55,18 @@ def clear_pass_insert(var):
     password.delete(0, tkinter.END)
 
 
+def studentlog():
+    login = "student"
+    login = str(login)
+
+
+def teacherlog():
+    login = "teacher"
+    login = str(login)
+
+
 def login():
-    resp = requests.get('https://cs-project-database-connection.herokuapp.com/login/' + user.get() + '/' + password.get()).text
+    resp = requests.get('https://cs-project-database-connection.herokuapp.com/login/' + login + user.get() + '/' + password.get()).text
     if resp == "Success":
         frame2.pack_forget()
         frame3.pack()
@@ -72,6 +82,13 @@ def login():
     else:
         respon = Label(frame2, text="Backend Error", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
+
+
+r = IntVar()
+sel_stud = Radiobutton(frame2, text="Student Login", variable=r, bg="White", value=1, command=studentlog)
+sel_stud.grid(row=0, column=1)
+sel_teach = Radiobutton(frame2, text="Teacher Login", variable=r, bg="White", value=2, command=teacherlog)
+sel_teach.grid(row=0, column=2)
 
 
 user = Entry(frame2, width=40, font=("Times New Roman", 10, 'bold'))

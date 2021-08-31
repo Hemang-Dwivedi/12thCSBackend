@@ -16,9 +16,14 @@ db = client.csproject
 col = db.users
 
 
-@app.route('/login/<userid>/<password>', methods=['GET'])
-def login(userid, password):
-    user = col.find_one({'userid': userid})
+@app.route('/login/<userlvl>/<userid>/<password>', methods=['GET'])
+def login(userlvl, userid, password):
+    global collec
+    if userlvl == "teacher":
+        collec = db.teachers
+    elif userlvl == "student":
+        collec = db.students
+    user = collec.find_one({'userid': userid})
     if not userid or not password:
         return make_response('Email or password Not Found', 401)
     if not user:
@@ -30,7 +35,7 @@ def login(userid, password):
 
 @app.route('/attendance/<userid>', methods=['POST'])
 def attendance(userid):
-    user = col.find_one({'userid': userid})
+    user = collec.find_one({'userid': userid})
     user = json.dumps(json_util.dumps(user))
     # present = col.find_one()
     return make_response(user, 200)

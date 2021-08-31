@@ -1,5 +1,10 @@
-import pickle as pk
+from tkinter import *
 
-obj = open("player.dat", "rb")
+master = Tk()
 
-1
+v = IntVar()
+
+Radiobutton(master, text="One", variable=v, value=1).pack(anchor=W)
+Radiobutton(master, text="Two", variable=v, value=2).pack(anchor=W)
+
+mainloop()
