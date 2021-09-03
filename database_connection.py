@@ -6,22 +6,22 @@ from flask_cors import CORS
 from pymongo import MongoClient
 from bson import json_util
 import json
+import datetime
 
 app = Flask(__name__)
 DB_URL = 'mongodb+srv://Admin:admin%40123@cluster0.1lkj9.mongodb.net/csproject?retryWrites=true&w=majority'
-app = Flask(__name__)
 CORS(app)
 client = MongoClient(DB_URL)
 db = client.csproject
 col = db.users
 
 
-@app.route('/login/<userlvl>/<userid>/<password>', methods=['GET'])
-def login(userlvl, userid, password):
+@app.route('/login/<designation>/<userid>/<password>', methods=['POST'])
+def login(designation, userid, password):
     global collec
-    if userlvl == "teacher":
+    if designation == "teacher":
         collec = db.teachers
-    elif userlvl == "student":
+    elif designation == "student":
         collec = db.students
     user = collec.find_one({'userid': userid})
     if not userid or not password:
@@ -30,15 +30,20 @@ def login(userlvl, userid, password):
         return make_response('User not found, Please enter a valid user', 402)
     if user['password'] != password:
         return make_response('Incorrect Password', 403)
+    user['present'].append(datetime.datetime.now())
+    collec.replace_one({'userid': userid}, user)
     return make_response('Success', 200)
 
 
-@app.route('/attendance/<userid>', methods=['POST'])
-def attendance(userid):
+@app.route('/attend/<designation>/<userid>', methods=['POST'])
+def attendance(designation, userid):
+    global collec
+    if designation == "teacher":
+        collec = db.teachers
+    elif designation == "student":
+        collec = db.students
     user = collec.find_one({'userid': userid})
-    user = json.dumps(json_util.dumps(user))
-    # present = col.find_one()
-    return make_response(user, 200)
+    return make_response(str(user['present']), 200)
 
 
 # if condition to check name is equal to main to generate a script

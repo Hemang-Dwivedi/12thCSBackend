@@ -3,6 +3,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 import time
 import requests
+from tkcalendar import *
 
 
 root = Tk()
@@ -14,13 +15,17 @@ root.iconbitmap("LOGO.ico")
 # title frame
 frame1 = LabelFrame(root, bg="Red")
 frame1.pack()
-# main frame
-frame3 = Frame(root, bg="White")
-frame3.pack(fill='both')
-frame3.pack_forget()
+# teacher frame
+teachFrame = Frame(root, bg="White")
+teachFrame.pack(fill='both')
+teachFrame.pack_forget()
+# student frame
+studentFrame = Frame(root, bg="White")
+studentFrame.pack(fill='both')
+studentFrame.pack_forget()
 # login frame
-frame2 = LabelFrame(root, bg="White", width="18", labelanchor="n")
-frame2.pack(pady=200, ipadx=10, ipady=10)
+loginFrame = LabelFrame(root, bg="White", width="18", labelanchor="n")
+loginFrame.pack(pady=200, ipadx=10, ipady=10)
 
 # Title image
 img = ImageTk.PhotoImage(Image.open("LOGO.png"))
@@ -43,7 +48,7 @@ def digitalclock():
 digitalclock()
 # clock end
 # Login part
-userid = Label(frame2, text="Login ID:", width=20, font=("Times New Roman", 10, 'bold'), fg="Black", bg="White")
+userid = Label(loginFrame, text="Login ID:", width=20, font=("Times New Roman", 10, 'bold'), fg="Black", bg="White")
 userid.grid(row=2, column=1, pady=(20, 10))
 
 
@@ -66,49 +71,49 @@ def teacherlog():
 
 
 def login():
-    resp = requests.get('https://cs-project-database-connection.herokuapp.com/login/' + logine + '/' + user.get() + '/' + password.get()).text
+    resp = requests.post('https://cs-project-database-connection.herokuapp.com/login/' + logine + '/' + user.get() + '/' + password.get()).text
     if resp == "Success":
-        frame2.pack_forget()
-        frame3.pack()
+        loginFrame.pack_forget()
+        if logine == "teacher":
+            teachFrame.pack()
+        elif logine == "student":
+            studentFrame.pack()
     elif resp == "Email or password Not Found":
-        respon = Label(frame2, text="User or password Not Found", bg="White", width=30, fg="Red")
+        respon = Label(loginFrame, text="User or password Not Found", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
     elif resp == "User not found, Please enter a valid user":
-        respon = Label(frame2, text="User not found, Please enter a valid user", bg="White", width=30, fg="Red")
+        respon = Label(loginFrame, text="User not found, Please enter a valid user", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
     elif resp == "Incorrect Password":
-        respon = Label(frame2, text="Incorrect Password", bg="White", width=30, fg="Red")
+        respon = Label(loginFrame, text="Incorrect Password", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
     else:
-        respon = Label(frame2, text="Backend Error", bg="White", width=30, fg="Red")
+        respon = Label(loginFrame, text="Backend Error", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
 
 
 r = IntVar()
-sel_stud = Radiobutton(frame2, text="Student Login", variable=r, bg="White", value=1, command=studentlog)
+sel_stud = Radiobutton(loginFrame, text="Student Login", variable=r, bg="White", value=1, command=studentlog)
 sel_stud.grid(row=0, column=1)
-sel_teach = Radiobutton(frame2, text="Teacher Login", variable=r, bg="White", value=2, command=teacherlog)
+sel_teach = Radiobutton(loginFrame, text="Teacher Login", variable=r, bg="White", value=2, command=teacherlog)
 sel_teach.grid(row=0, column=2)
 
 
-user = Entry(frame2, width=40, font=("Times New Roman", 10, 'bold'))
+user = Entry(loginFrame, width=40, font=("Times New Roman", 10, 'bold'))
 user.insert(0, "Enter your user ID / Email ID")
 user.grid(row=2, column=2, pady=(20, 10))
 user.bind("<Button-1>", clear_login_insert)
 
-passtxt= Label(frame2, text="Password", width=20, font=("Times New Roman", 10, 'bold'), fg="Black", bg="White")
+passtxt= Label(loginFrame, text="Password", width=20, font=("Times New Roman", 10, 'bold'), fg="Black", bg="White")
 passtxt.grid(row=3, column=1, pady=(10, 10))
-password = Entry(frame2, width=40, font=("Times New Roman", 10, 'bold'), show="*")
+password = Entry(loginFrame, width=40, font=("Times New Roman", 10, 'bold'), show="*")
 password.grid(row=3, column=2)
 password.insert(0, "Enter Password")
 password.bind("<Button-1>", clear_pass_insert)
 
 
-login_button = Button(frame2, text="Login", command=login, fg="Red", bg="white")
+login_button = Button(loginFrame, text="Login", command=login, fg="Red", bg="white")
 login_button.grid(row=4, column=1, columnspan=2, pady=(10, 20))
-
-
-
 
 
 root.mainloop()
