@@ -4,19 +4,19 @@ from flask import Flask, make_response
 # from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
-from bson import json_util
-import json
+#from bson import json_util
+#import json
 import datetime
 
 app = Flask(__name__)
 DB_URL = 'mongodb+srv://Admin:admin%40123@cluster0.1lkj9.mongodb.net/csproject?retryWrites=true&w=majority'
+app = Flask(__name__)
 CORS(app)
 client = MongoClient(DB_URL)
 db = client.csproject
-col = db.users
 
 
-@app.route('/login/<designation>/<userid>/<password>', methods=['POST'])
+@app.route('/login/<designation>/<userid>/<password>/', methods=['POST'])
 def login(designation, userid, password):
     global collec
     if designation == "teacher":
@@ -35,7 +35,7 @@ def login(designation, userid, password):
     return make_response('Success', 200)
 
 
-@app.route('/attend/<designation>/<userid>', methods=['POST'])
+@app.route('/attend/<designation>/<userid>/', methods=['POST'])
 def attendance(designation, userid):
     global collec
     if designation == "teacher":
