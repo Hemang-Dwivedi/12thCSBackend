@@ -1,11 +1,13 @@
 # import bcrypt
 # import mongoengine as mongoDB
-from flask import Flask, make_response
+import json
+
+from flask import Flask, make_response, jsonify
 # from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from pymongo import MongoClient
-#from bson import json_util
-#import json
+# bson import json_util
+import json
 import datetime
 
 app = Flask(__name__)
@@ -30,12 +32,19 @@ def login(designation, userid, password):
         return make_response('User not found, Please enter a valid user', 402)
     if user['password'] != password:
         return make_response('Incorrect Password', 403)
-    user['present'].append(datetime.datetime.now())
+    var = len(user['present'])
+    var2 = 1
+    while var2 < var or var2 == var:
+        if user['present'][var2 - 1].date() == datetime.datetime.today().date():
+            break
+        elif var == var2:
+            user['present'].append((datetime.datetime.today()))
+        var2 = var2 + 1
     collec.replace_one({'userid': userid}, user)
     return make_response('Success', 200)
 
 
-@app.route('/attend/<designation>/<userid>/', methods=['POST'])
+@app.route('/attend/<designation>/<userid>/', methods=['GET'])
 def attendance(designation, userid):
     global collec
     if designation == "teacher":
@@ -43,7 +52,7 @@ def attendance(designation, userid):
     elif designation == "student":
         collec = db.students
     user = collec.find_one({'userid': userid})
-    return make_response(str(user['present']), 200)
+    return make_response(jsonify({'present': user['present']}), 200)
 
 
 # if condition to check name is equal to main to generate a script
