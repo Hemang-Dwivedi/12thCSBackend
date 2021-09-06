@@ -44,7 +44,7 @@ def login(designation, userid, password):
     return make_response('Success', 200)
 
 
-@app.route('/attend/<designation>/<userid>/', methods=['GET'])
+@app.route('/attend/<designation>/<userid>/', methods=['POST'])
 def attendance(designation, userid):
     global collec
     if designation == "teacher":
@@ -52,7 +52,8 @@ def attendance(designation, userid):
     elif designation == "student":
         collec = db.students
     user = collec.find_one({'userid': userid})
-    return make_response(jsonify({'present': user['present']}), 200)
+    return make_response({'present': user['present']}, 200)
+    # return make_response(jsonify({'present': user['present']}), 200)
 
 
 # if condition to check name is equal to main to generate a script
