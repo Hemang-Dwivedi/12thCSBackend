@@ -4,7 +4,7 @@ from PIL import ImageTk, Image
 import time
 import requests
 from tkcalendar import *
-
+import datetime
 
 root = Tk()
 # root.configure(bg="White")
@@ -69,6 +69,21 @@ def teacherlog():
     global logine
     logine = "teacher"
 
+#teacher login start
+
+
+cal = Calendar(teachFrame, selectmode="none")
+cal.grid(row=0, column=3)
+
+
+def attendance():
+    resp = requests.post('http://127.0.0.1:5000/attend/teacher/admin/')
+    attend = resp.json()
+    for i in attend['present']:
+        date = datetime.datetime.strptime(i, '%a, %d %b %Y %H:%M:%S %Z')
+        cal.calevent_create(date, 'Present', 'Present')
+        cal.tag_config('Present', bg="Green")
+
 
 def login():
     resp = requests.post('https://cs-project-database-connection.herokuapp.com/login/' + logine + '/' + user.get() + '/' + password.get()).text
@@ -90,6 +105,7 @@ def login():
     else:
         respon = Label(loginFrame, text="Backend Error", bg="White", width=30, fg="Red")
         respon.grid(row=1, column=1, columnspan=2)
+    attendance()
 
 
 r = IntVar()
@@ -114,6 +130,7 @@ password.bind("<Button-1>", clear_pass_insert)
 
 login_button = Button(loginFrame, text="Login", command=login, fg="Red", bg="white")
 login_button.grid(row=4, column=1, columnspan=2, pady=(10, 20))
+#login end
 
 
 root.mainloop()
