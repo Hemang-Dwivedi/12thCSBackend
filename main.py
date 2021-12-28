@@ -69,6 +69,21 @@ def teacherlog():
     global logine
     logine = "teacher"
 
+#teacher login start
+
+
+cal = Calendar(teachFrame, selectmode="none")
+cal.grid(row=0, column=3)
+
+
+def attendance():
+    resp = requests.post('http://127.0.0.1:5000/attend/teacher/admin/')
+    attend = resp.json()
+    for i in attend['present']:
+        date = datetime.datetime.strptime(i, '%a, %d %b %Y %H:%M:%S %Z')
+        cal.calevent_create(date, 'Present', 'Present')
+        cal.tag_config('Present', bg="Green")
+
 
 #teacher login start
 cal = Calendar(teachFrame, selectmode="none")
