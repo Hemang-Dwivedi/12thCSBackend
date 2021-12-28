@@ -1,13 +1,6 @@
-# import bcrypt
-# import mongoengine as mongoDB
-import json
-
-from flask import Flask, make_response, jsonify
-# from flask_bcrypt import Bcrypt
+from flask import Flask, make_response
 from flask_cors import CORS
 from pymongo import MongoClient
-# bson import json_util
-import json
 import datetime
 
 app = Flask(__name__)

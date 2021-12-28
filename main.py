@@ -69,15 +69,14 @@ def teacherlog():
     global logine
     logine = "teacher"
 
+
 #teacher login start
-
-
 cal = Calendar(teachFrame, selectmode="none")
 cal.grid(row=0, column=3)
 
 
 def attendance():
-    resp = requests.post('http://127.0.0.1:5000/attend/teacher/admin/')
+    resp = requests.post('https://cs-project-database-connection.herokuapp.com//attend/teacher/admin/')
     attend = resp.json()
     for i in attend['present']:
         date = datetime.datetime.strptime(i, '%a, %d %b %Y %H:%M:%S %Z')
